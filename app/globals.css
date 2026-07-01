@@ -1,26 +1,28 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Design System Color Tokens */
+  --color-canvas-base: #F9F9FB;
+  --color-surface-elevate: #FFFFFF;
+  --color-telemetry-node: #6366F1;
+  --color-telemetry-track: #E0E0FE;
+  --color-yield-gold: #D4AF37;
+  --color-industrial-obsidian: #111115;
+
+  /* Tactile Drop Shadows */
+  --shadow-tactile-raised: 0px 1px 2px rgba(0, 0, 0, 0.01), 0px 4px 16px rgba(99, 102, 241, 0.02), 0px 8px 32px rgba(17, 17, 21, 0.01);
+  --shadow-groove-inset: inset 0px 2px 4px rgba(17, 17, 21, 0.04), inset 0px -1px 0px rgba(255, 255, 255, 0.8);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-canvas-base);
+  color: var(--color-industrial-obsidian);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
