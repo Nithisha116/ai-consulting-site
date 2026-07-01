@@ -1,7 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  animate,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 import { Database, LineChart, Truck, Landmark, User, Settings, Activity, Layers, Gauge, Cpu } from "lucide-react";
 
 interface NodeItem {
@@ -46,9 +52,7 @@ export default function SupplyChainSculpture() {
   }, [activeNode]);
 
   return (
-    <div className="w-full h-[880px] bg-[#F9F9FB] rounded-3xl border border-gray-100 shadow-[0px_8px_32px_rgba(0,0,0,0.01)] relative overflow-hidden flex flex-col p-6 select-none">
-      
-      {/* Top Status Banner */}
+    <div className="w-full h-[880px] bg-[#F9F9FB] rounded-3xl border border-gray-100 shadow-[0px_8px_32px_rgba(0,0,0,0.01)] relative overflow-hidden flex flex-col p-6 select-none will-change-transform">
       <div className="flex justify-between items-center border-b border-gray-100 pb-4 mb-2 z-20">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
@@ -62,12 +66,9 @@ export default function SupplyChainSculpture() {
         <span className="text-[9px] font-mono text-gray-300 font-semibold">ORCHESTRATOR // RUN_ACTIVE_60FPS</span>
       </div>
 
-      {/* Main Graph Area */}
       <div className="flex-1 relative w-full h-full">
-        {/* Underlay Grid alignment lines */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-50 pointer-events-none" />
 
-        {/* --- ACTIVE PIPELINE NETWORK TRACKS (SVG) --- */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
@@ -76,11 +77,9 @@ export default function SupplyChainSculpture() {
             </filter>
           </defs>
 
-          {/* Central Vertical Spine Glow & Line */}
           <path d="M 50% 10% L 50% 96%" stroke={pulseColor} strokeWidth="6" strokeOpacity="0.12" fill="none" filter="url(#glow)" style={{ transition: "stroke 0.4s ease" }} />
           <path d="M 50% 10% L 50% 96%" stroke="#E2E8F0" strokeWidth="2" fill="none" />
 
-          {/* Spoke Track Paths mapping horizontally into center trunk */}
           {nodes.map((node) => {
             if (node.id === "sensor" || node.id === "customer") return null;
             return (
@@ -106,7 +105,6 @@ export default function SupplyChainSculpture() {
             );
           })}
 
-          {/* Running Telemetry Stream Pulses */}
           <motion.circle r="4" fill={pulseColor} animate={{ cx: ["50%", "50%"], cy: ["10%", "50%"] }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }} />
           <motion.circle r="3.5" fill={pulseColor} animate={{ cx: ["23%", "50%"], cy: ["24%", "24%"] }} transition={{ duration: 2.5, delay: 0.5, repeat: Infinity, ease: "linear" }} />
           <motion.circle r="3.5" fill={pulseColor} animate={{ cx: ["77%", "50%"], cy: ["24%", "24%"] }} transition={{ duration: 2.5, delay: 1.2, repeat: Infinity, ease: "linear" }} />
@@ -117,7 +115,6 @@ export default function SupplyChainSculpture() {
           <motion.circle r="4" fill={pulseColor} animate={{ cx: ["50%", "50%"], cy: ["50%", "96%"] }} transition={{ duration: 3.2, delay: 0.1, repeat: Infinity, ease: "linear" }} />
         </svg>
 
-        {/* --- CENTRAL CORE ENGINE --- */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30" onMouseEnter={() => setActiveNode("core")}>
           <motion.div 
             className={`w-40 h-40 rounded-2xl bg-white border flex flex-col items-center justify-center text-center p-4 transition-all duration-300 ${
@@ -137,7 +134,6 @@ export default function SupplyChainSculpture() {
           </motion.div>
         </div>
 
-        {/* --- SPATIAL EDGE HUB SPOKE NODES --- */}
         {nodes.map((node) => {
           const isActive = activeNode === node.id;
           return (
@@ -151,6 +147,8 @@ export default function SupplyChainSculpture() {
                 className={`p-3 bg-white rounded-xl border flex gap-3 items-center transition-all duration-300 cursor-pointer ${
                   isActive ? "border-indigo-600 shadow-md scale-[1.01]" : "border-gray-100 shadow-[0px_2px_8px_rgba(0,0,0,0.01)] hover:border-indigo-200"
                 }`}
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
                 <div className="w-9 h-9 rounded-lg bg-slate-50 flex items-center justify-center shrink-0 border border-gray-100">
                   {node.icon}
@@ -165,8 +163,8 @@ export default function SupplyChainSculpture() {
         })}
       </div>
 
-      {/* --- BUSINESS EXPLAINER BAR --- */}
-      <div className="mt-2 bg-slate-50 border border-slate-100 p-4 rounded-xl z-20 min-h-[95px] text-left">
+      <div className="mt-2 bg-slate-50 border border-slate-100 p-4 rounded-xl z-20 min-h-[95px] text-left relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-[2px] h-full bg-indigo-500 transform origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-300" />
         <AnimatePresence mode="wait">
           {activeNode && (
             <motion.div
@@ -176,7 +174,8 @@ export default function SupplyChainSculpture() {
               exit={{ opacity: 0, y: -2 }}
               transition={{ duration: 0.1 }}
             >
-              <h5 className="text-[11px] font-bold text-indigo-600 tracking-wider uppercase">
+              <h5 className="text-[11px] font-bold text-indigo-600 tracking-wider uppercase flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-indigo-500 animate-ping" />
                 {activeNode === "core" ? "Central Integration Matrix" : nodes.find(n => n.id === activeNode)?.label}
               </h5>
               <p className="text-xs text-gray-600 mt-1 leading-relaxed">
@@ -197,7 +196,6 @@ export default function SupplyChainSculpture() {
   }
 }
 
-// Keep layout frameworks active
 export function LiveAuditProgress() {
   return (
     <div className="grid md:grid-cols-3 gap-6">
@@ -206,23 +204,38 @@ export function LiveAuditProgress() {
         { title: "Day 3: Leak Trailing Review", desc: "Building a dollar-matched framework identifying exactly where delayed responses are bleeding profit margins.", tag: "Yield Calculation" },
         { title: "Implementation: Guardrail Control", desc: "Deploying custom automation lines inside secure human-in-the-loop review screens before launch.", tag: "System Integration" }
       ].map((item, i) => (
-        <div key={i} className="p-6 rounded-2xl border border-gray-100 bg-white shadow-[0px_4px_16px_rgba(0,0,0,0.01)] relative">
+        <motion.div 
+          key={i} 
+          className="p-6 rounded-2xl border border-gray-100 bg-white shadow-[0px_4px_16px_rgba(0,0,0,0.01)] relative overflow-hidden group cursor-default"
+          whileHover={{ y: -4 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        >
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-indigo-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
           <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">{item.tag}</span>
           <h4 className="text-sm font-bold text-gray-900 mt-4 mb-2">{item.title}</h4>
           <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
-        </div>
+        </motion.div>
       ))}
     </div>
   );
 }
 
 export function IncrementingMetric({ value, prefix = "", suffix, label, desc }: { value: number; prefix?: string; suffix: string; label: string; desc: string }) {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => Math.round(latest).toLocaleString());
+
+  useEffect(() => {
+    const controls = animate(count, value, { duration: 2, ease: "easeOut" });
+    return () => controls.stop();
+  }, [value]);
+
   return (
-    <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-[0px_4px_16px_rgba(0,0,0,0.01)] text-left">
+    <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-[0px_4px_16px_rgba(0,0,0,0.01)] text-left relative overflow-hidden group">
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-indigo-500 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">{label}</span>
-      <div className="mt-3 text-gray-900 font-bold text-3xl font-sans">
+      <div className="mt-3 text-gray-900 font-bold text-3xl font-sans flex items-baseline">
         {prefix && <span className="text-xl text-gray-400 font-medium mr-0.5">{prefix}</span>}
-        {value.toLocaleString()}
+        <motion.span>{rounded}</motion.span>
         <span className="text-lg text-amber-600 font-semibold ml-0.5">{suffix}</span>
       </div>
       <p className="text-xs text-gray-500 mt-2 leading-relaxed">{desc}</p>
