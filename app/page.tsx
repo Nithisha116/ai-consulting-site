@@ -76,8 +76,8 @@ export default function Home() {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
-      const x = (e.clientX - innerWidth / 2) / 100;
-      const y = (e.clientY - innerHeight / 2) / 100;
+      const x = (e.clientX - innerWidth / 2) / 120;
+      const y = (e.clientY - innerHeight / 2) / 120;
       
       mouseX.set(x);
       mouseY.set(y);
@@ -115,7 +115,6 @@ export default function Home() {
       0.25
     );
 
-    // Optimized reveals: animating text from clip path / transparent translations directly instead of rigid solid layouts
     if (line1Ref.current) {
       const textSpan = line1Ref.current.querySelector(".reveal-text-span");
       tl.fromTo(textSpan, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.55);
@@ -128,9 +127,7 @@ export default function Home() {
 
     if (line3Ref.current) {
       const textSpan = line3Ref.current.querySelector(".gradient-text-span");
-      
       tl.fromTo(textSpan, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 1.35);
-      
       tl.fromTo(textSpan,
         { filter: "drop-shadow(0px 0px 0px rgba(99,102,241,0))" },
         { 
@@ -275,21 +272,24 @@ export default function Home() {
           className="relative z-20 max-w-4xl w-full flex flex-col text-left mt-12 will-change-transform"
           style={{ x: textX, y: textY }}
         >
+          <div ref={badgeRef} className="opacity-0 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-indigo-300 text-[10px] font-bold uppercase tracking-wider w-fit mb-6 shadow-sm">
+            <Radio className="w-3.5 h-3.5 text-indigo-400 animate-pulse" /> Live System Telemetry Active
+          </div>
 
           <h1 className="text-4xl lg:text-7xl font-bold font-sans tracking-tight leading-[1.04] mb-6 max-w-3xl flex flex-col select-none">
             <div ref={line1Ref} className="relative overflow-hidden block h-[1.1em] w-full">
-              <span className="reveal-text-span block will-change-transform">We eliminate industrial</span>
+              <span className="reveal-text-span block opacity-0 will-change-transform">We eliminate industrial</span>
             </div>
             <div ref={line2Ref} className="relative overflow-hidden block h-[1.1em] w-full">
-              <span className="reveal-text-span block will-change-transform">cost leaks with</span>
+              <span className="reveal-text-span block opacity-0 will-change-transform">cost leaks with</span>
             </div>
             <div ref={line3Ref} className="relative overflow-hidden block h-[1.15em] w-full py-0.5">
-              <span className="gradient-text-span inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-amber-300 bg-[size:200%_auto] will-change-transform">
+              <span className="gradient-text-span inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-amber-300 bg-[size:200%_auto] will-change-transform opacity-0">
                 deterministic AI
               </span>
             </div>
             <div ref={line4Ref} className="relative overflow-hidden block h-[1.1em] w-full">
-              <span className="reveal-text-span block will-change-transform">workflows.</span>
+              <span className="reveal-text-span block opacity-0 will-change-transform">workflows.</span>
             </div>
           </h1>
 
@@ -329,7 +329,7 @@ export default function Home() {
 
       <section className="border-b border-gray-100 bg-white py-6 px-6 lg:px-16 text-center relative z-30">
         <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-16 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-          <div className="flex items-center gap-2 group cursor-default"><ShieldCheck className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform" /> Isolated Data Vaulting</div>
+          <div className="flex items-center gap-2 group cursor-default"><ShieldCheck className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform" /> On-Premise Data Isolation</div>
           <div className="flex items-center gap-2 group cursor-default"><ShieldCheck className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform" /> ISO 9001 Alignment Verified</div>
           <div className="flex items-center gap-2 group cursor-default"><ShieldCheck className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform" /> Hardened Process Frameworks</div>
           <div className="flex items-center gap-2 group cursor-default"><ShieldCheck className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform" /> Human-Guarded safety limiters</div>
@@ -340,7 +340,7 @@ export default function Home() {
         <div className="mb-12 max-w-2xl text-left">
           <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest block">Interactive Consulting Simulator</span>
           <h2 className="text-2xl lg:text-4xl font-bold mt-2 text-[#111115]">Explore our multi-node process orchestration mapping.</h2>
-          <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+          <p className="text-xs text-gray-500 mt-2 leading-relaxed font-body">
             Hover over any processing module spoke below to visualize exactly how custom operational models communicate instantly with our primary AI Agent Decision Hub.
           </p>
         </div>
@@ -353,18 +353,26 @@ export default function Home() {
           <h2 className="text-2xl lg:text-4xl font-bold mt-2 text-[#111115]">Where manual latency bleeds mid-market operational margins.</h2>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-[0px_4px_16px_rgba(0,0,0,0.01)] relative overflow-hidden group">
+          <motion.div 
+            className="p-6 bg-white rounded-2xl border border-gray-100 shadow-[0px_4px_16px_rgba(0,0,0,0.01)] relative overflow-hidden group text-left"
+            whileHover={{ scale: 1.01 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-500 group-hover:w-1.5 transition-all" />
             <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400">Procurement & Stock Gaps</h4>
             <h3 className="text-base font-bold mt-2 text-[#111115]">Manual sheet updates trigger high-cost emergency purchasing loops.</h3>
-            <p className="text-xs text-gray-500 mt-2 leading-relaxed">Checking stocks by hand once a week leaves buying clerks blind to supplier delivery profiles until components fail to arrive. (~RM 180K/year lost to emergency buying)</p>
-          </div>
-          <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-[0px_4px_16px_rgba(0,0,0,0.01)] relative overflow-hidden group">
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed font-body">Checking stocks by hand once a week leaves buying clerks blind to supplier delivery profiles until components fail to arrive. (~RM 180K/year lost to emergency buying)</p>
+          </motion.div>
+          <motion.div 
+            className="p-6 bg-white rounded-2xl border border-gray-100 shadow-[0px_4px_16px_rgba(0,0,0,0.01)] relative overflow-hidden group text-left"
+            whileHover={{ scale: 1.01 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-500 group-hover:w-1.5 transition-all" />
             <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400">Logistics Routing Gaps</h4>
             <h3 className="text-base font-bold mt-2 text-[#111115]">Phone-based dispatching cross-tracks vehicles and wastes driver fuel.</h3>
-            <p className="text-xs text-gray-500 mt-2 leading-relaxed">Scheduling 40 multi-stop routes from memory forces trucks to run half-empty, trapping fleet vehicle capacity and delaying invoices. (~18% excess fuel + driver-hours)</p>
-          </div>
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed font-body">Scheduling 40 multi-stop routes from memory forces trucks to run half-empty, trapping fleet vehicle capacity and delaying invoices. (~18% excess fuel + driver-hours)</p>
+          </motion.div>
         </div>
       </section>
 
@@ -373,13 +381,13 @@ export default function Home() {
           <div className="mb-12 text-center max-w-xl mx-auto">
             <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest block">The Entry Blueprint</span>
             <h2 className="text-2xl lg:text-4xl font-bold mt-1 text-[#111115]">The AI Workflow Audit Protocol</h2>
-            <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed font-body">
               We eliminate corporate risk barriers. We don't demand major initial engineering contract overrides. We benchmark your real floor leaks first through a low-profile standalone analysis.
             </p>
           </div>
           <LiveAuditProgress />
           <div className="mt-12 p-6 rounded-2xl bg-[#F9F9FB] border border-gray-100 flex flex-wrap items-center justify-between gap-6 max-w-4xl mx-auto shadow-sm">
-            <div>
+            <div className="text-left">
               <h4 className="text-xs font-bold uppercase text-[#111115]">Ready to evaluate your facility's tracking layers?</h4>
               <p className="text-[11px] text-gray-500 mt-0.5">S$2,000 – S$2,500 fixed upfront pricing based on plant scale. Completed in days.</p>
             </div>
@@ -396,7 +404,7 @@ export default function Home() {
       </section>
 
       <section id="results" className="px-6 lg:px-16 py-20 max-w-7xl mx-auto relative z-30">
-        <div className="mb-12 max-w-xl">
+        <div className="mb-12 max-w-xl text-left">
           <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest block">Quantified System Metrics</span>
           <h2 className="text-2xl lg:text-4xl font-bold mt-2 text-[#111115]">Measurable capacity returns live across ASEAN supply paths.</h2>
         </div>
@@ -414,7 +422,7 @@ export default function Home() {
           <h2 className="text-3xl lg:text-5xl font-bold font-sans tracking-tight mt-2 mb-4 text-[#111115]">
             Initialize your facility's <span className="text-indigo-600">Workflow Audit</span>.
           </h2>
-          <p className="text-sm text-gray-500 max-w-md mx-auto leading-relaxed mb-8">
+          <p className="text-sm text-gray-500 max-w-md mx-auto leading-relaxed mb-8 font-body">
             Put our strategy engineers on your floor floor for 2–3 days. We will map out your exact data flows, expose operational drag, and build your custom automation business case.
           </p>
           <div className="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
