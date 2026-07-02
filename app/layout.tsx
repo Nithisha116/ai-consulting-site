@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Industrial Synthesis | Enterprise AI Architecture",
-  description: "Eliminating industrial cost leaks with deterministic AI workflows.",
+  title: "Industrial Synthesis | Enterprise AI Consulting",
+  description: "Eliminating industrial cost leakage with deterministic AI automation workflows and unified telemetry layers across ASEAN operations.",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
