@@ -513,9 +513,23 @@ export default function Home() {
         <OperationalCapabilities />
       </div>
 
-      {/* --- SECTION 06: THE AUDIT TIMELINE PROTOCOL --- */}
-      <section id="audit" className="bg-white border-y border-gray-100 py-24 px-6 lg:px-16 relative z-30">
-        <div className="max-w-7xl mx-auto">
+     {/* --- SECTION 06: THE AUDIT TIMELINE PROTOCOL --- */}
+      <section id="audit" className="bg-white border-y border-gray-100 py-24 px-6 lg:px-16 relative z-30 overflow-hidden">
+        
+        {/* RE-ENGINEERED LAVENDER AMBIENT DATA SPRINKLES */}
+        <div className="absolute inset-0 w-full h-full pointer-events-none select-none overflow-hidden z-0 opacity-30 mix-blend-multiply filter invert hue-rotate-[250deg] saturate-[3] brightness-[0.95]">
+          <video 
+            className="w-full h-full object-cover scale-[1.01]"
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+          >
+            <source src="/sprinkles.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="mb-12 text-center max-w-xl mx-auto">
             <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest block">The Entry Blueprint</span>
             <h2 className="text-2xl lg:text-4xl font-bold mt-1 text-[#111115]">The AI Workflow Audit Protocol</h2>
@@ -523,7 +537,9 @@ export default function Home() {
               We eliminate corporate risk barriers. We don't demand major initial engineering contract overrides. We benchmark your real floor leaks first through a low-profile standalone analysis.
             </p>
           </div>
+          
           <LiveAuditProgress />
+          
           <div className="mt-12 p-6 rounded-2xl bg-[#F9F9FB] border border-gray-100 flex flex-wrap items-center justify-between gap-6 max-w-4xl mx-auto shadow-sm">
             <div className="text-left">
               <h4 className="text-xs font-bold uppercase text-[#111115]">Ready to evaluate your facility's tracking layers?</h4>
